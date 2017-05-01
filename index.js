@@ -40,14 +40,6 @@ var argv = require('yargs')
   .argv
 
 
-try{
-  var config = require(__dirname+'/config.json')
-} catch(e){
-  config = {}
-}
-
-console.log(argv)
-
 var client = knox.createClient({
       key: argv.key|| process.env.AWS_ACCESS_KEY
       , secret: argv.secret|| process.env.AWS_SECRET_KEY
@@ -233,7 +225,6 @@ function streamLogs(logData,startTime,endTime,cb) {
       }
       streams.push(res)
       if(!--c){
-        console.log('calling back with proper streams')
         pipeAndFilter(streams)
       }
     })
@@ -260,7 +251,6 @@ function streamLogs(logData,startTime,endTime,cb) {
     sorted.pipe(t2(function(l,enc,cb){
       var time = logTime(l)
       if(time < startTime){
-        console.log(time,'<',startTime)
         //return cb()
       }
 
