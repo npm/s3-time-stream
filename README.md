@@ -4,7 +4,7 @@ cli tool. stream an exact time range from logs stored in s3.
 find the time segment with binary search so you download the minimum data possible.
 
 ```sh
-s3-time-stream --bucket fastly-registry-logs --start 2017-04-27T16:08:00.212Z --end 2017-04-27T16:08:02.212Z
+s3-time-stream --bucket log-bucket --start 2017-04-27T16:08:00.212Z --end 2017-04-27T16:08:02.212Z
 ```
 
 
