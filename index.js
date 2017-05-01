@@ -139,8 +139,17 @@ function search(file,size,start,end,cb){
   var min = 0;
 
   ;(function loop(){
-    if(position >= size || position < 0 || ++loops >= 30) {
-      return cb(new Error('no matching range or loops never stopped '+loops))
+    if(position >= size){
+      return cb(new Error('could not find time near end of log'))
+    }
+
+    if(position < 0){
+      return cb(new Error('could not find time near start of log'))
+    }
+
+    if(++loops >= 40) {
+
+      return cb(new Error('loops never stopped '+loops))
     }
 
 
@@ -148,9 +157,15 @@ function search(file,size,start,end,cb){
       lines = [];
       var checked = false;
 
+      var startPosition = position;
+
+      //console.log(_id+'position>',position,max,min)
+
       res.pipe(split2()).on('data',function(l){
         lines.push(l)
-        if(lines.length != 2) return;
+        if(lines.length != 2) {
+          return;
+        }
 
         checked = true;
         var ts = logTime(l)
@@ -192,11 +207,13 @@ function search(file,size,start,end,cb){
         res.destroy()
 
       }).on('end',function(){
+        //console.log(_id+' s:e',startPosition === position,' lines: '+lines.length);
         if(lines.length <= 2){
           chunkSize += chunkSize;
-          if(chunkSize > 1024) {
-            chunkSize = 1024; 
+          if(chunkSize > 1000000) {
+            chunkSize = 1000000; 
           }
+
           if(!checked) {
             loop()
           }
