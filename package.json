@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "s3-time-stream": "node ./index.js"
+    "s3-time-stream": "./index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
