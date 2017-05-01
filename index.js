@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var knox = require('knox')
 var split2 = require('split2')
 var once = require('once')
