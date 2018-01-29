@@ -17,14 +17,12 @@ var argv = require('yargs')
     default: process.env.AWS_ACCESS_KEY,
     required:true,
   })
-
   .option('start',{
     alias:'s',
     description:"the time to start from. A Date.parse compatible time string.",
     required:true,
   })
   .option('aws-secret', {
-    alias: 'e',
     description: 'the s3 secret to use. defaults to env AWS_ACCESS_KEY ',
     default: process.env.AWS_SECRET_KEY,
     required:true,
@@ -104,8 +102,9 @@ function findTime(time,cb){
 
     data.Contents.forEach(function(obj){
       search(obj.Key,obj.Size,time-startWindow,time,function(err,start){
-        if(err) throw  new Error("error loading "+obj.key+': '+err);
-        ranges[obj.Key] = {start:start,size:obj.Size};
+        if(err) console.error("error loading "+obj.Key+': '+err);
+        else ranges[obj.Key] = {start:start,size:obj.Size};
+
         if(!--c){
           cb(false,ranges);
         }
@@ -152,7 +151,7 @@ function search(file,size,start,end,cb){
       return cb(new Error('loops never stopped '+loops))
     }
 
-
+    //console.log('getting range: ',file,position,position+chunkSize)
     getRange(file,position,position+chunkSize,function(err,res){
       lines = [];
       var checked = false;
@@ -169,7 +168,7 @@ function search(file,size,start,end,cb){
 
         checked = true;
         var ts = logTime(l)
-
+        //console.log(l)
         if(ts < start){
           // cannot be less than position.
           min = position
