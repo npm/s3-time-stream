@@ -23,7 +23,7 @@ var argv = require('yargs')
     required:true,
   })
   .option('aws-secret', {
-    description: 'the s3 secret to use. defaults to env AWS_ACCESS_KEY ',
+    description: 'the s3 secret to use. defaults to env AWS_SECRET_KEY ',
     default: process.env.AWS_SECRET_KEY,
     required:true,
   })
